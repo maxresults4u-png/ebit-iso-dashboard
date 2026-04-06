@@ -1,1 +1,21 @@
 
+{
+  "event": {
+    "lastUpdate": "2026-04-06T06:41:00Z",
+    "schema": "ebit.iso20022.v1"
+  },
+  "amount": {
+    "currentSupply": 1000000000,
+    "burnedTotal": 120000,
+    "treasuryBalance": 12840000
+  },
+  "market": {
+    "price": 0.0042,
+    "volume24h": 182000
+  },
+  "status": {
+    "network": "XRPL",
+    "ammPool": "active",
+    "treasury": "operational"
+  }
+}
