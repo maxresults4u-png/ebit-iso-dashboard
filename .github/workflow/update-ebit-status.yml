@@ -1,1 +1,54 @@
 
+name: Update EBIT ISO status
+
+on:
+  schedule:
+    - cron: "*/5 * * * *"  # every 5 minutes
+  workflow_dispatch:
+
+jobs:
+  update-status:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Fetch latest EBIT data (placeholder)
+        run: |
+          # TODO: replace BACKEND_URL with your ISO event endpoint
+          # Example: curl https://your-backend/iso/ebit/status
+          cat > ebit-status.json << 'EOF'
+          {
+            "event": {
+              "lastUpdate": "$(date -u +%Y-%m-%dT%H:%M:%SZ)",
+              "schema": "ebit.iso20022.v1"
+            },
+            "amount": {
+              "currentSupply": 1000000000,
+              "burnedTotal": 120000,
+              "treasuryBalance": 12840000
+            },
+            "market": {
+              "price": 0.0042,
+              "volume24h": 182000
+            },
+            "status": {
+              "network": "XRPL",
+              "ammPool": "active",
+              "treasury": "operational"
+            }
+          }
+          EOF
+
+      - name: Commit and push if changed
+        run: |
+          if git diff --quiet; then
+            echo "No changes in ebit-status.json"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add ebit-status.json
+          git commit -m "Update EBIT ISO status [skip ci]"
+          git push
